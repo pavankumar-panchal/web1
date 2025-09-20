@@ -1,311 +1,709 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Instagram, Mail, ChevronLeft, ChevronRight, Play } from 'lucide-react';
+import { Menu, X, Instagram, Mail, Camera, Award, Heart, Phone, ArrowUp, Play } from 'lucide-react';
 
 interface NavigationProps {
   currentSection: string;
-  onSectionChange: (section: string) => void;
   isMenuOpen: boolean;
   onMenuToggle: () => void;
 }
 
 const Navigation: React.FC<NavigationProps> = ({ 
   currentSection, 
-  onSectionChange, 
   isMenuOpen, 
   onMenuToggle 
 }) => {
   const sections = [
-    { id: 'home', label: 'Home' },
-    { id: 'modeling', label: 'Modeling Portfolio' },
-    { id: 'ugc', label: 'UGC & Content Creation' },
-    { id: 'about', label: 'About Me' },
-    { id: 'contact', label: 'Contact' }
+    { id: 'home', label: 'Home', icon: <Camera size={20} /> },
+    { id: 'modeling', label: 'Modeling Portfolio', icon: <Award size={20} /> },
+    { id: 'ugc', label: 'UGC & Content Creation', icon: <Heart size={20} /> },
+    { id: 'about', label: 'About Me', icon: <Instagram size={20} /> },
+    { id: 'contact', label: 'Contact', icon: <Phone size={20} /> }
   ];
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
 
   return (
     <>
-      {/* Mobile Menu Button */}
+      {/* Scroll Progress Bar */}
+      <div className="fixed top-0 left-0 right-0 z-40 h-1 bg-gray-200">
+        <div 
+          className="h-full bg-gradient-to-r from-pink-500 to-purple-600 transition-all duration-300"
+          style={{ 
+            width: `${((window.scrollY || 0) / (document.documentElement.scrollHeight - window.innerHeight)) * 100}%` 
+          }}
+        />
+      </div>
+
+      {/* Fixed Menu Button */}
       <button
         onClick={onMenuToggle}
-        className="fixed top-6 right-6 z-50 md:hidden bg-black text-white p-3 rounded-full shadow-lg"
+        aria-label={isMenuOpen ? 'Close navigation' : 'Open navigation'}
+        className="fixed top-6 right-6 z-50 bg-gradient-to-r from-pink-500 to-purple-600 text-white p-4 rounded-full shadow-2xl backdrop-blur-sm border border-white/20 transition-all duration-300 hover:shadow-pink-500/25 hover:shadow-xl hover:scale-110"
       >
-        {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
       </button>
 
-      {/* Sidebar Navigation */}
-      <nav className={`fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-40 transform transition-transform duration-300 ${
-        isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-      } md:translate-x-0 md:w-64`}>
-        <div className="p-8">
-          <h2 className="text-2xl font-bold mb-8">Portfolio</h2>
-          <ul className="space-y-4">
-            {sections.map((section) => (
-              <li key={section.id}>
+      {/* Floating Navigation Sidebar */}
+      <nav
+        className={`fixed top-0 right-0 h-full w-80 bg-white/95 backdrop-blur-xl shadow-2xl z-40 transform transition-all duration-500 ease-out ${
+          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        } border-l border-gray-200/50`}
+      >
+        <div className="p-8 h-full flex flex-col">
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+              Portfolio
+            </h2>
+            <p className="text-gray-500 text-sm mt-2">Smooth scroll navigation</p>
+          </div>
+          
+          <ul className="space-y-3 flex-1">
+            {sections.map((section, index) => (
+              <li key={section.id} style={{ animationDelay: `${index * 0.1}s` }}
+                  className={`transform transition-all duration-300 ${isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-4 opacity-0'}`}>
                 <button
                   onClick={() => {
-                    onSectionChange(section.id);
+                    scrollToSection(section.id);
                     onMenuToggle();
                   }}
-                  className={`w-full text-left py-3 px-4 rounded-lg transition-all duration-200 ${
+                  className={`group w-full text-left py-4 px-5 rounded-xl transition-all duration-300 flex items-center gap-3 ${
                     currentSection === section.id
-                      ? 'bg-black text-white'
-                      : 'hover:bg-gray-100 text-gray-700'
+                      ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg transform scale-105'
+                      : 'hover:bg-gray-50 text-gray-700 hover:shadow-md hover:transform hover:scale-102'
                   }`}
                 >
-                  {section.label}
+                  <span className={`transition-all duration-300 ${
+                    currentSection === section.id ? 'text-white' : 'text-gray-400 group-hover:text-pink-500'
+                  }`}>
+                    {section.icon}
+                  </span>
+                  <span className="font-medium">{section.label}</span>
                 </button>
               </li>
             ))}
           </ul>
+          
+          {/* Social Links in Sidebar */}
+          <div className="mt-auto pt-8 border-t border-gray-200">
+            <p className="text-gray-500 text-sm mb-4">Connect with me</p>
+            <div className="flex gap-3">
+              <a href="#" className="p-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-110">
+                <Instagram size={18} />
+              </a>
+              <a href="#" className="p-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-110">
+                <Mail size={18} />
+              </a>
+            </div>
+          </div>
         </div>
       </nav>
 
-      {/* Overlay for mobile */}
+      {/* Enhanced Overlay */}
       {isMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
-          onClick={onMenuToggle}
+        <div 
+          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-30 transition-all duration-300" 
+          onClick={onMenuToggle} 
         />
       )}
     </>
   );
 };
 
-const ImageCarousel: React.FC = () => {
-  const [currentImage, setCurrentImage] = useState(0);
+const MainShowcase: React.FC = () => {
   const images = [
-    'https://images.pexels.com/photos/1065084/pexels-photo-1065084.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    'https://images.pexels.com/photos/1036622/pexels-photo-1036622.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    'https://images.pexels.com/photos/1759622/pexels-photo-1759622.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+    '/web1/images/cropped-img-59.jpg',
+    '/web1/images/img-60.jpg',
+    '/web1/images/img-62.jpg',
+    '/web1/images/img-66.jpg'
   ];
+
+  const [selected, setSelected] = useState<string | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentImage((prev) => (prev + 1) % images.length);
-    }, 5000);
-    return () => clearInterval(timer);
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    }, 4000);
+    return () => clearInterval(interval);
   }, [images.length]);
 
-  const nextImage = () => {
-    setCurrentImage((prev) => (prev + 1) % images.length);
-  };
-
-  const prevImage = () => {
-    setCurrentImage((prev) => (prev - 1 + images.length) % images.length);
-  };
-
-  return (
-    <div className="relative h-screen w-full overflow-hidden">
-      {images.map((image, index) => (
-        <div
-          key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
-            index === currentImage ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <img
-            src={image}
-            alt={`Portfolio ${index + 1}`}
-            className="w-full h-full object-cover"
-          />
-        </div>
-      ))}
-      
-      {/* Navigation Arrows */}
-      <button
-        onClick={prevImage}
-        className="absolute left-6 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-3 rounded-full transition-all duration-200"
-      >
-        <ChevronLeft size={24} />
-      </button>
-      <button
-        onClick={nextImage}
-        className="absolute right-6 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-3 rounded-full transition-all duration-200"
-      >
-        <ChevronRight size={24} />
-      </button>
-
-      {/* Overlay Content */}
-      <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-        <div className="text-center text-white px-8">
-          <h1 className="text-6xl md:text-8xl font-bold mb-4">ELENA</h1>
-          <p className="text-xl md:text-2xl font-light tracking-wide">
-            Model • Content Creator • Artist
-          </p>
-        </div>
-      </div>
-
-      {/* Dots Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3">
-        {images.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentImage(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-200 ${
-              index === currentImage ? 'bg-white' : 'bg-white bg-opacity-50'
-            }`}
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const ModelingPortfolio: React.FC = () => {
-  const portfolioSections = [
-    {
-      title: 'Fashion',
-      images: [
-        'https://images.pexels.com/photos/1065084/pexels-photo-1065084.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/1036622/pexels-photo-1036622.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/1759622/pexels-photo-1759622.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=600'
-      ]
-    },
-    {
-      title: 'Beauty',
-      images: [
-        'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/1172207/pexels-photo-1172207.jpeg?auto=compress&cs=tinysrgb&w=600'
-      ]
-    },
-    {
-      title: 'Bridal',
-      images: [
-        'https://images.pexels.com/photos/1405819/pexels-photo-1405819.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/1697912/pexels-photo-1697912.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/1488414/pexels-photo-1488414.jpeg?auto=compress&cs=tinysrgb&w=600'
-      ]
-    },
-    {
-      title: 'Fashion Weeks',
-      images: [
-        'https://images.pexels.com/photos/1065084/pexels-photo-1065084.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/1036622/pexels-photo-1036622.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/1759622/pexels-photo-1759622.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=600'
-      ]
-    },
-    {
-      title: 'Film Festivals',
-      images: [
-        'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/1172207/pexels-photo-1172207.jpeg?auto=compress&cs=tinysrgb&w=600'
-      ]
-    }
+  const stats = [
+    { number: '50+', label: 'Fashion Shows' },
+    { number: '200+', label: 'Photo Shoots' },
+    { number: '100K+', label: 'Social Followers' },
+    { number: '5+', label: 'Years Experience' }
   ];
 
+  const scrollToNext = () => {
+    const modelingSection = document.getElementById('modeling');
+    if (modelingSection) {
+      modelingSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <div className="py-20 px-8">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-5xl font-bold text-center mb-16">Modeling Portfolio</h2>
-        
-        {portfolioSections.map((section, sectionIndex) => (
-          <div key={section.title} className="mb-20">
-            <h3 className="text-3xl font-semibold mb-8 text-center">{section.title}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {section.images.map((image, imageIndex) => (
-                <div
-                  key={imageIndex}
-                  className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
-                >
-                  <img
-                    src={image}
-                    alt={`${section.title} ${imageIndex + 1}`}
-                    className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
-                    <div className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <p className="text-lg font-semibold">{section.title}</p>
-                    </div>
+    <section id="home" className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-pink-50 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-pink-200 to-purple-200 rounded-full opacity-20 animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-purple-200 to-indigo-200 rounded-full opacity-15 animate-float"></div>
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-6 py-20 min-h-screen flex items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full">
+          {/* Left: Enhanced intro */}
+          <div className="space-y-8 animate-fade-in">
+            <div>
+              <h1 className="text-6xl md:text-8xl font-black tracking-tight mb-6 bg-gradient-to-r from-gray-900 via-pink-600 to-purple-600 bg-clip-text text-transparent leading-tight">
+                Riina
+                <br />
+                <span className="text-5xl md:text-7xl">Seise</span>
+              </h1>
+              <div className="w-24 h-1 bg-gradient-to-r from-pink-500 to-purple-600 mb-6"></div>
+              <p className="text-xl md:text-2xl text-gray-600 leading-relaxed max-w-lg">
+                Professional model, content creator and visual storyteller. Creating authentic moments that captivate and inspire.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-4">
+              <button 
+                onClick={scrollToNext}
+                className="group bg-gradient-to-r from-pink-600 to-purple-600 text-white px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center gap-2"
+              >
+                <span className="font-semibold">View Portfolio</span>
+                <ArrowUp className="w-4 h-4 rotate-45 group-hover:rotate-90 transition-transform duration-300" />
+              </button>
+              
+              <button 
+                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                className="border-2 border-gray-900 text-gray-900 px-8 py-4 rounded-full hover:bg-gray-900 hover:text-white transition-all duration-300 font-semibold"
+              >
+                Get In Touch
+              </button>
+            </div>
+
+            {/* Enhanced feature list */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12">
+              {[
+                { icon: <Award className="w-6 h-6" />, text: "Fashion Editorials" },
+                { icon: <Camera className="w-6 h-6" />, text: "Brand Collaborations" },
+                { icon: <Heart className="w-6 h-6" />, text: "UGC & Social Campaigns" }
+              ].map((item, index) => (
+                <div key={index} className="flex items-center gap-3 p-4 bg-white/60 backdrop-blur-sm rounded-2xl shadow-sm hover:shadow-md transition-all duration-300">
+                  <div className="p-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl">
+                    {item.icon}
                   </div>
+                  <span className="text-gray-700 font-medium">{item.text}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12 pt-12 border-t border-gray-200">
+              {stats.map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-3xl md:text-4xl font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                    {stat.number}
+                  </div>
+                  <div className="text-sm text-gray-600 font-medium mt-1">{stat.label}</div>
                 </div>
               ))}
             </div>
           </div>
-        ))}
+
+          {/* Right: Enhanced image gallery */}
+          <div className="relative">
+            {/* Main image display with rotation */}
+            <div className="relative mb-8 group">
+              <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-600 rounded-3xl blur-xl opacity-30 scale-105 group-hover:opacity-50 transition-all duration-500"></div>
+              <div className="relative bg-white p-2 rounded-3xl shadow-2xl">
+                <img 
+                  src={images[currentImageIndex]} 
+                  alt={`Riina ${currentImageIndex + 1}`} 
+                  className="w-full h-[500px] object-cover rounded-2xl cursor-pointer transition-all duration-500 hover:scale-105"
+                  onClick={() => setSelected(images[currentImageIndex])}
+                />
+                <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm rounded-xl p-4">
+                  <p className="text-gray-900 font-semibold">Professional Portfolio</p>
+                  <p className="text-gray-600 text-sm">Click to view full size</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Thumbnail strip with enhanced styling */}
+            <div className="grid grid-cols-4 gap-4">
+              {images.map((src, i) => (
+                <button
+                  key={i}
+                  onClick={() => {
+                    setCurrentImageIndex(i);
+                    setSelected(src);
+                  }}
+                  className={`group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 ${
+                    currentImageIndex === i ? 'ring-4 ring-pink-500 ring-offset-2' : ''
+                  }`}
+                >
+                  <img 
+                    src={src} 
+                    alt={`Thumbnail ${i + 1}`} 
+                    className="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </button>
+              ))}
+            </div>
+
+            {/* Floating action button */}
+            <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg">
+              <Play className="w-5 h-5 text-gray-600" />
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+          <button 
+            onClick={scrollToNext}
+            className="flex flex-col items-center gap-2 text-gray-600 hover:text-pink-600 transition-colors duration-300 animate-bounce"
+          >
+            <span className="text-sm font-medium">Scroll to explore</span>
+            <div className="w-6 h-10 border-2 border-gray-300 rounded-full flex justify-center">
+              <div className="w-1 h-3 bg-gray-400 rounded-full mt-2 animate-pulse"></div>
+            </div>
+          </button>
+        </div>
+
+        {/* Enhanced Modal */}
+        {selected && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+            <div className="relative max-w-5xl w-full">
+              <button
+                onClick={() => setSelected(null)}
+                className="absolute -top-12 right-0 bg-white text-gray-900 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-10"
+                aria-label="Close"
+              >
+                <X size={20} />
+              </button>
+              <div className="bg-white p-4 rounded-2xl shadow-2xl">
+                <img 
+                  src={selected} 
+                  alt="Large view" 
+                  className="w-full h-auto max-h-[80vh] object-contain rounded-xl" 
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
+
+const ModelingPortfolio: React.FC = () => {
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  const portfolioSections = [
+    {
+      title: 'Fashion Editorial',
+      category: 'fashion',
+      description: 'High-fashion editorials and runway looks',
+      images: [
+        '/web1/images/cropped-img-59.jpg',
+        '/web1/images/img-60.jpg',
+        'https://images.pexels.com/photos/1759622/pexels-photo-1759622.jpeg?auto=compress&cs=tinysrgb&w=600',
+        'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=600'
+      ]
+    },
+    {
+      title: 'Beauty & Portrait',
+      category: 'beauty',
+      description: 'Beauty campaigns and portrait photography',
+      images: [
+        '/web1/images/img-62.jpg',
+        '/web1/images/img-66.jpg',
+        'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=600',
+        'https://images.pexels.com/photos/1172207/pexels-photo-1172207.jpeg?auto=compress&cs=tinysrgb&w=600'
+      ]
+    },
+    {
+      title: 'Commercial & Lifestyle',
+      category: 'commercial',
+      description: 'Brand campaigns and lifestyle photography',
+      images: [
+        '/web1/images/cropped-img-59.jpg',
+        '/web1/images/img-62.jpg',
+        'https://images.pexels.com/photos/1697912/pexels-photo-1697912.jpeg?auto=compress&cs=tinysrgb&w=600',
+        'https://images.pexels.com/photos/1488414/pexels-photo-1488414.jpeg?auto=compress&cs=tinysrgb&w=600'
+      ]
+    }
+  ];
+
+  const categories = [
+    { id: 'all', label: 'All Work', icon: <Camera className="w-5 h-5" /> },
+    { id: 'fashion', label: 'Fashion', icon: <Award className="w-5 h-5" /> },
+    { id: 'beauty', label: 'Beauty', icon: <Heart className="w-5 h-5" /> },
+    { id: 'commercial', label: 'Commercial', icon: <Instagram className="w-5 h-5" /> }
+  ];
+
+  const filteredSections = selectedCategory === 'all' 
+    ? portfolioSections 
+    : portfolioSections.filter(section => section.category === selectedCategory);
+
+  return (
+    <div id="modeling" className="py-20 px-6 bg-gradient-to-br from-gray-50 to-white min-h-screen">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h2 className="text-5xl md:text-6xl font-black tracking-tight mb-6 bg-gradient-to-r from-gray-900 via-pink-600 to-purple-600 bg-clip-text text-transparent">
+            Modeling Portfolio
+          </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-pink-500 to-purple-600 mx-auto mb-6"></div>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            A curated collection of my professional work spanning fashion editorials, 
+            beauty campaigns, and commercial photography.
+          </p>
+        </div>
+
+        {/* Category Filter */}
+        <div className="flex flex-wrap justify-center gap-4 mb-16">
+          {categories.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => setSelectedCategory(category.id)}
+              className={`group flex items-center gap-3 px-6 py-3 rounded-full transition-all duration-300 ${
+                selectedCategory === category.id
+                  ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg scale-105'
+                  : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 hover:shadow-md hover:scale-105'
+              }`}
+            >
+              <span className={`transition-all duration-300 ${
+                selectedCategory === category.id ? 'text-white' : 'text-gray-500 group-hover:text-pink-500'
+              }`}>
+                {category.icon}
+              </span>
+              <span className="font-semibold">{category.label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Portfolio Grid */}
+        <div className="space-y-20">
+          {filteredSections.map((section, sectionIndex) => (
+            <div key={section.title} className="animate-fade-in" style={{ animationDelay: `${sectionIndex * 0.2}s` }}>
+              <div className="text-center mb-12">
+                <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{section.title}</h3>
+                <p className="text-lg text-gray-600 max-w-2xl mx-auto">{section.description}</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {section.images.map((image, imageIndex) => (
+                  <div
+                    key={`${section.title}-${imageIndex}`}
+                    className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer"
+                    onClick={() => setSelectedImage(image)}
+                  >
+                    {/* Image container with aspect ratio */}
+                    <div className="aspect-[3/4] overflow-hidden">
+                      <img
+                        src={image}
+                        alt={`${section.title} ${imageIndex + 1}`}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        loading="lazy"
+                      />
+                    </div>
+                    
+                    {/* Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
+                      <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                        <p className="text-white font-bold text-lg">{section.title}</p>
+                        <p className="text-white/80 text-sm">Click to view full size</p>
+                      </div>
+                    </div>
+
+                    {/* Hover icon */}
+                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-50 group-hover:scale-100">
+                      <Camera className="w-4 h-4 text-gray-700" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Enhanced Modal */}
+        {selectedImage && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4">
+            <div className="relative max-w-5xl w-full">
+              <button
+                onClick={() => setSelectedImage(null)}
+                className="absolute -top-12 right-0 bg-white text-gray-900 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-10"
+                aria-label="Close"
+              >
+                <X size={20} />
+              </button>
+              <div className="bg-white p-4 rounded-2xl shadow-2xl">
+                <img 
+                  src={selectedImage} 
+                  alt="Portfolio item" 
+                  className="w-full h-auto max-h-[80vh] object-contain rounded-xl" 
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Call to action */}
+        <div className="text-center mt-20 p-12 bg-gradient-to-r from-pink-50 to-purple-50 rounded-3xl">
+          <h3 className="text-3xl font-bold text-gray-900 mb-4">Ready to Collaborate?</h3>
+          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+            Let's create something amazing together. Get in touch to discuss your next project.
+          </p>
+          <button 
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+            className="bg-gradient-to-r from-pink-600 to-purple-600 text-white px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 font-semibold"
+          >
+            Start a Conversation
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
 const UGCSection: React.FC = () => {
+  const [selectedContent, setSelectedContent] = useState<string | null>(null);
+
   const ugcContent = [
     {
       type: 'image',
-      url: 'https://images.pexels.com/photos/1065084/pexels-photo-1065084.jpeg?auto=compress&cs=tinysrgb&w=600',
-      brand: 'Beauty Brand Collaboration'
+      url: '/web1/images/cropped-img-59.jpg',
+      brand: 'Beauty Brand Collaboration',
+      category: 'Beauty',
+      description: 'Authentic beauty content showcasing natural glow and skincare routine'
     },
     {
       type: 'video',
-      url: 'https://images.pexels.com/photos/1036622/pexels-photo-1036622.jpeg?auto=compress&cs=tinysrgb&w=600',
-      brand: 'Fashion Video Campaign'
+      url: '/web1/images/img-60.jpg',
+      brand: 'Fashion Video Campaign',
+      category: 'Fashion',
+      description: 'Dynamic fashion content featuring latest seasonal trends'
     },
     {
       type: 'image',
-      url: 'https://images.pexels.com/photos/1759622/pexels-photo-1759622.jpeg?auto=compress&cs=tinysrgb&w=600',
-      brand: 'Lifestyle Content'
+      url: '/web1/images/img-62.jpg',
+      brand: 'Lifestyle Content',
+      category: 'Lifestyle',
+      description: 'Relatable lifestyle moments that connect with audiences'
     },
     {
       type: 'image',
-      url: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=600',
-      brand: 'Product Showcase'
+      url: '/web1/images/img-66.jpg',
+      brand: 'Product Showcase',
+      category: 'Product',
+      description: 'Creative product photography with authentic styling'
     },
     {
       type: 'video',
       url: 'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=600',
-      brand: 'Brand Partnership'
+      brand: 'Brand Partnership',
+      category: 'Brand',
+      description: 'Long-term brand partnerships creating consistent content'
     },
     {
       type: 'image',
       url: 'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=600',
-      brand: 'Social Media Content'
+      brand: 'Social Media Content',
+      category: 'Social',
+      description: 'Engaging social media content that drives interaction'
+    }
+  ];
+
+  const services = [
+    {
+      icon: <Camera className="w-8 h-8" />,
+      title: 'Content Creation',
+      description: 'High-quality photos and videos tailored to your brand aesthetic'
+    },
+    {
+      icon: <Instagram className="w-8 h-8" />,
+      title: 'Social Media Strategy',
+      description: 'Authentic content that resonates with your target audience'
+    },
+    {
+      icon: <Heart className="w-8 h-8" />,
+      title: 'Brand Partnerships',
+      description: 'Long-term collaborations that build genuine brand loyalty'
+    },
+    {
+      icon: <Award className="w-8 h-8" />,
+      title: 'Product Reviews',
+      description: 'Honest, detailed reviews that influence purchasing decisions'
     }
   ];
 
   return (
-    <div className="py-20 px-8 bg-gray-50">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-5xl font-bold text-center mb-8">UGC & Content Creation</h2>
-        <p className="text-xl text-gray-600 text-center mb-16 max-w-3xl mx-auto">
-          Collaborating with brands to create authentic, engaging content that resonates with audiences. 
-          From product showcases to lifestyle content, I bring creativity and professionalism to every project.
-        </p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {ugcContent.map((content, index) => (
-            <div
-              key={index}
-              className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
+    <div id="ugc" className="py-20 px-6 bg-gradient-to-br from-purple-50 via-pink-50 to-white min-h-screen">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h2 className="text-5xl md:text-6xl font-black tracking-tight mb-6 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 bg-clip-text text-transparent">
+            UGC & Content Creation
+          </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto mb-6"></div>
+          <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+            Authentic user-generated content that builds trust, drives engagement, and converts audiences into customers. 
+            I create content that feels genuine and speaks directly to your target demographic.
+          </p>
+        </div>
+
+        {/* Services Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+          {services.map((service, index) => (
+            <div 
+              key={index} 
+              className="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100"
             >
-              <div className="relative">
-                <img
-                  src={content.url}
-                  alt={content.brand}
-                  className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                {content.type === 'video' && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="bg-white bg-opacity-80 rounded-full p-4 group-hover:scale-110 transition-transform duration-300">
-                      <Play className="w-8 h-8 text-black" />
-                    </div>
-                  </div>
-                )}
+              <div className="p-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl w-fit mb-6 group-hover:scale-110 transition-transform duration-300">
+                {service.icon}
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="absolute bottom-4 left-4 right-4">
-                  <p className="text-white font-semibold">{content.brand}</p>
-                  <p className="text-white text-sm opacity-80">{content.type === 'video' ? 'Video Content' : 'Photo Content'}</p>
-                </div>
-              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">{service.title}</h3>
+              <p className="text-gray-600 leading-relaxed">{service.description}</p>
             </div>
           ))}
         </div>
+
+        {/* Content Gallery */}
+        <div className="mb-16">
+          <h3 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
+            Recent Collaborations
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {ugcContent.map((content, index) => (
+              <div
+                key={index}
+                className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer bg-white"
+                onClick={() => setSelectedContent(content.url)}
+              >
+                <div className="aspect-square overflow-hidden">
+                  <img
+                    src={content.url}
+                    alt={content.brand}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                  
+                  {/* Video play button */}
+                  {content.type === 'video' && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="bg-white/90 backdrop-blur-sm rounded-full p-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                        <Play className="w-8 h-8 text-purple-600 ml-1" />
+                      </div>
+                    </div>
+                  )}
+                </div>
+                
+                {/* Content Info */}
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                      {content.category}
+                    </span>
+                    <span className="text-gray-400 text-sm">
+                      {content.type === 'video' ? 'Video' : 'Photo'}
+                    </span>
+                  </div>
+                  
+                  <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors duration-300">
+                    {content.brand}
+                  </h4>
+                  
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {content.description}
+                  </p>
+                </div>
+
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-purple-600/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end">
+                  <div className="p-6 text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                    <p className="font-bold">View Full Content</p>
+                    <p className="text-white/80 text-sm">Click to expand</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Stats Section */}
+        <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl p-12 text-white text-center mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {[
+              { number: '150+', label: 'UGC Campaigns' },
+              { number: '2M+', label: 'Content Views' },
+              { number: '85%', label: 'Engagement Rate' },
+              { number: '50+', label: 'Brand Partners' }
+            ].map((stat, index) => (
+              <div key={index}>
+                <div className="text-4xl md:text-5xl font-black mb-2">{stat.number}</div>
+                <div className="text-white/90 font-medium">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Call to Action */}
+        <div className="text-center bg-white p-12 rounded-3xl shadow-lg">
+          <h3 className="text-3xl font-bold text-gray-900 mb-4">Ready to Create Together?</h3>
+          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+            Let's discuss how authentic content can elevate your brand and connect with your audience.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button 
+              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+              className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 font-semibold"
+            >
+              Start Collaboration
+            </button>
+            <a 
+              href="mailto:riina@example.com" 
+              className="border-2 border-purple-600 text-purple-600 px-8 py-4 rounded-full hover:bg-purple-600 hover:text-white transition-all duration-300 font-semibold"
+            >
+              Request Media Kit
+            </a>
+          </div>
+        </div>
+
+        {/* Modal */}
+        {selectedContent && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4">
+            <div className="relative max-w-5xl w-full">
+              <button
+                onClick={() => setSelectedContent(null)}
+                className="absolute -top-12 right-0 bg-white text-gray-900 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-10"
+                aria-label="Close"
+              >
+                <X size={20} />
+              </button>
+              <div className="bg-white p-4 rounded-2xl shadow-2xl">
+                <img 
+                  src={selectedContent} 
+                  alt="UGC Content" 
+                  className="w-full h-auto max-h-[80vh] object-contain rounded-xl" 
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -313,12 +711,20 @@ const UGCSection: React.FC = () => {
 
 const AboutSection: React.FC = () => {
   return (
-    <div className="py-20 px-8">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-5xl font-bold text-center mb-16">About Me</h2>
+    <div id="about" className="py-20 px-6 bg-gradient-to-br from-indigo-50 via-white to-purple-50 min-h-screen flex items-center">
+      <div className="max-w-6xl mx-auto w-full">
+        <div className="text-center mb-16">
+          <h2 className="text-5xl md:text-6xl font-black tracking-tight mb-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+            About Me
+          </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto mb-6"></div>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Passionate about creating authentic moments through fashion, beauty, and lifestyle content
+          </p>
+        </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="space-y-6 order-2 lg:order-1">
             <p className="text-lg leading-relaxed text-gray-700">
               With over 5 years of experience in the modeling and content creation industry, I've had the privilege 
               of working with renowned fashion brands, beauty companies, and creative agencies across Europe and beyond.
@@ -342,35 +748,41 @@ const AboutSection: React.FC = () => {
               self-acceptance, diversity, and environmental consciousness.
             </p>
             
-            <div className="pt-6">
-              <h3 className="text-2xl font-semibold mb-4">Experience Highlights</h3>
-              <ul className="space-y-2 text-gray-700">
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-black rounded-full mr-3"></span>
-                  Featured in Vogue, Elle, and Harper's Bazaar
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-black rounded-full mr-3"></span>
-                  Walked for major fashion weeks in Paris, Milan, and London
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-black rounded-full mr-3"></span>
-                  Brand ambassador for sustainable fashion brands
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-black rounded-full mr-3"></span>
-                  Over 100K engaged followers across social platforms
-                </li>
-              </ul>
+            <div className="pt-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Experience Highlights</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[
+                  { icon: <Award className="w-5 h-5" />, text: "Featured in Vogue, Elle, and Harper's Bazaar" },
+                  { icon: <Camera className="w-5 h-5" />, text: "Walked for major fashion weeks in Paris, Milan, and London" },
+                  { icon: <Heart className="w-5 h-5" />, text: "Brand ambassador for sustainable fashion brands" },
+                  { icon: <Instagram className="w-5 h-5" />, text: "Over 100K engaged followers across social platforms" }
+                ].map((item, index) => (
+                  <div key={index} className="flex items-center gap-3 p-4 bg-white/60 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
+                    <div className="p-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg">
+                      {item.icon}
+                    </div>
+                    <span className="text-gray-700 font-medium text-sm">{item.text}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
           
-          <div className="lg:pl-8">
-            <img
-              src="https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=800"
-              alt="Elena Portrait"
-              className="w-full rounded-lg shadow-xl"
-            />
+          <div className="order-1 lg:order-2">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-3xl blur-xl opacity-30 scale-105"></div>
+              <div className="relative bg-white p-2 rounded-3xl shadow-2xl">
+                <img
+                  src="/web1/images/img-62.jpg"
+                  alt="Riina Seise Portrait"
+                  className="w-full h-[600px] object-cover rounded-2xl"
+                />
+                <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm rounded-xl p-4">
+                  <p className="text-gray-900 font-semibold">Professional Portrait</p>
+                  <p className="text-gray-600 text-sm">Behind the scenes moments</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -399,52 +811,88 @@ const ContactSection: React.FC = () => {
   };
 
   return (
-    <div className="py-20 px-8 bg-gray-50">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-5xl font-bold text-center mb-16">Contact</h2>
+    <div id="contact" className="py-20 px-6 bg-gradient-to-br from-gray-900 via-purple-900 to-pink-900 min-h-screen flex items-center text-white">
+      <div className="max-w-6xl mx-auto w-full">
+        <div className="text-center mb-16">
+          <h2 className="text-5xl md:text-6xl font-black tracking-tight mb-6 bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-300 bg-clip-text text-transparent">
+            Let's Connect
+          </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-pink-400 to-purple-400 mx-auto mb-6"></div>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            Ready to create something amazing together? Get in touch to discuss your next project.
+          </p>
+        </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <div>
-            <h3 className="text-2xl font-semibold mb-6">Let's Work Together</h3>
-            <p className="text-lg text-gray-700 mb-8">
-              I'm always excited to collaborate on new projects. Whether you're looking for 
-              a model for your next campaign, content creator for your brand, or have a creative 
-              project in mind, I'd love to hear from you.
-            </p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          {/* Left side - Contact Info */}
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-3xl font-bold mb-6 text-white">Get In Touch</h3>
+              <p className="text-lg text-gray-300 mb-8 leading-relaxed">
+                Whether you're looking for a model for your next campaign, content creator for your brand, 
+                or have a creative project in mind, I'd love to hear from you.
+              </p>
+            </div>
             
-            <div className="space-y-4">
-              <div className="flex items-center space-x-4">
-                <Mail className="w-6 h-6 text-gray-600" />
-                <span className="text-lg">elena@example.com</span>
+            <div className="space-y-6">
+              <div className="flex items-center space-x-4 p-4 bg-white/10 backdrop-blur-sm rounded-xl">
+                <div className="p-3 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl">
+                  <Mail className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <p className="font-semibold text-white">Email</p>
+                  <p className="text-gray-300">riina@example.com</p>
+                </div>
               </div>
-              <div className="flex items-center space-x-4">
-                <Instagram className="w-6 h-6 text-gray-600" />
-                <span className="text-lg">@elena_model</span>
+              
+              <div className="flex items-center space-x-4 p-4 bg-white/10 backdrop-blur-sm rounded-xl">
+                <div className="p-3 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl">
+                  <Instagram className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <p className="font-semibold text-white">Instagram</p>
+                  <p className="text-gray-300">@riina_model</p>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-4 p-4 bg-white/10 backdrop-blur-sm rounded-xl">
+                <div className="p-3 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl">
+                  <Phone className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <p className="font-semibold text-white">Available for</p>
+                  <p className="text-gray-300">Fashion shoots, Brand collaborations, UGC campaigns</p>
+                </div>
               </div>
             </div>
             
-            <div className="mt-8 flex space-x-4">
-              <a
-                href="mailto:elena@example.com"
-                className="bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors duration-200"
-              >
-                Send Email
-              </a>
-              <a
-                href="https://instagram.com/elena_model"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="border-2 border-black text-black px-8 py-3 rounded-lg hover:bg-black hover:text-white transition-all duration-200"
-              >
-                Follow on Instagram
-              </a>
+            <div className="pt-8">
+              <h4 className="text-xl font-bold mb-4 text-white">Follow My Work</h4>
+              <div className="flex space-x-4">
+                <a
+                  href="mailto:riina@example.com"
+                  className="bg-gradient-to-r from-pink-600 to-purple-600 text-white px-8 py-4 rounded-full hover:shadow-xl transition-all duration-300 hover:scale-105 font-semibold"
+                >
+                  Send Email
+                </a>
+                <a
+                  href="https://instagram.com/riina_model"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border-2 border-pink-400 text-pink-400 px-8 py-4 rounded-full hover:bg-pink-400 hover:text-white transition-all duration-300 font-semibold"
+                >
+                  Follow on Instagram
+                </a>
+              </div>
             </div>
           </div>
           
-          <div className="bg-white p-8 rounded-xl shadow-lg">
+          {/* Right side - Contact Form */}
+          <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20">
+            <h4 className="text-2xl font-bold mb-6 text-white">Send a Message</h4>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
                   Name
                 </label>
                 <input
@@ -453,13 +901,14 @@ const ContactSection: React.FC = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all duration-200 text-white placeholder-gray-300"
+                  placeholder="Your name"
                   required
                 />
               </div>
               
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
                   Email
                 </label>
                 <input
@@ -468,13 +917,14 @@ const ContactSection: React.FC = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all duration-200 text-white placeholder-gray-300"
+                  placeholder="your@email.com"
                   required
                 />
               </div>
               
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
                   Message
                 </label>
                 <textarea
@@ -483,19 +933,35 @@ const ContactSection: React.FC = () => {
                   rows={5}
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-200 resize-none"
+                  className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all duration-200 resize-none text-white placeholder-gray-300"
+                  placeholder="Tell me about your project..."
                   required
                 />
               </div>
               
               <button
                 type="submit"
-                className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition-colors duration-200"
+                className="w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white py-4 rounded-lg hover:shadow-xl transition-all duration-300 hover:scale-105 font-semibold"
               >
                 Send Message
               </button>
             </form>
           </div>
+        </div>
+
+        {/* Stats */}
+        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          {[
+            { number: '500+', label: 'Projects Completed' },
+            { number: '50+', label: 'Happy Clients' },
+            { number: '5', label: 'Years Experience' },
+            { number: '24/7', label: 'Available' }
+          ].map((stat, index) => (
+            <div key={index} className="p-6 bg-white/10 backdrop-blur-sm rounded-xl">
+              <div className="text-3xl md:text-4xl font-black text-white mb-2">{stat.number}</div>
+              <div className="text-gray-300 font-medium">{stat.label}</div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -503,58 +969,77 @@ const ContactSection: React.FC = () => {
 };
 
 const Footer: React.FC = () => {
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <footer className="bg-black text-white py-12 px-8">
+    <footer className="bg-black text-white py-16 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div>
-            <h3 className="text-2xl font-bold mb-4">ELENA</h3>
-            <p className="text-gray-300">
-              Model • Content Creator • Artist
+          <div className="lg:col-span-2">
+            <h3 className="text-3xl font-black mb-4 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+              Riina Seise
+            </h3>
+            <p className="text-gray-400 mb-6 leading-relaxed">
+              Professional model, content creator and visual storyteller. 
+              Creating authentic moments that captivate and inspire audiences worldwide.
             </p>
-          </div>
-          
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Portfolio</h4>
-            <ul className="space-y-2 text-gray-300">
-              <li><a href="#" className="hover:text-white transition-colors">Fashion</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Beauty</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Bridal</a></li>
-            </ul>
-          </div>
-          
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Experience</h4>
-            <ul className="space-y-2 text-gray-300">
-              <li><a href="#" className="hover:text-white transition-colors">Fashion Weeks</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Film Festivals</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">UGC Content</a></li>
-            </ul>
-          </div>
-          
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Connect</h4>
             <div className="flex space-x-4">
               <a
-                href="https://instagram.com/elena_model"
+                href="mailto:riina@example.com"
+                className="bg-gradient-to-r from-pink-500 to-purple-600 p-3 rounded-full hover:shadow-lg transition-all duration-300 hover:scale-110"
+              >
+                <Mail size={20} />
+              </a>
+              <a
+                href="https://instagram.com/riina_model"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-gray-800 p-3 rounded-full hover:bg-gray-700 transition-colors"
+                className="bg-gradient-to-r from-pink-500 to-purple-600 p-3 rounded-full hover:shadow-lg transition-all duration-300 hover:scale-110"
               >
                 <Instagram size={20} />
               </a>
               <a
-                href="mailto:elena@example.com"
-                className="bg-gray-800 p-3 rounded-full hover:bg-gray-700 transition-colors"
+                href="#"
+                className="bg-gradient-to-r from-pink-500 to-purple-600 p-3 rounded-full hover:shadow-lg transition-all duration-300 hover:scale-110"
               >
-                <Mail size={20} />
+                <Camera size={20} />
               </a>
             </div>
           </div>
+          
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+            <ul className="space-y-2 text-gray-400">
+              <li><button onClick={() => scrollToSection('home')} className="hover:text-pink-400 transition-colors">Home</button></li>
+              <li><button onClick={() => scrollToSection('modeling')} className="hover:text-pink-400 transition-colors">Portfolio</button></li>
+              <li><button onClick={() => scrollToSection('ugc')} className="hover:text-pink-400 transition-colors">UGC Content</button></li>
+              <li><button onClick={() => scrollToSection('about')} className="hover:text-pink-400 transition-colors">About</button></li>
+              <li><button onClick={() => scrollToSection('contact')} className="hover:text-pink-400 transition-colors">Contact</button></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Services</h4>
+            <ul className="space-y-2 text-gray-400">
+              <li><span className="hover:text-pink-400 transition-colors">Fashion Modeling</span></li>
+              <li><span className="hover:text-pink-400 transition-colors">Beauty Campaigns</span></li>
+              <li><span className="hover:text-pink-400 transition-colors">Content Creation</span></li>
+              <li><span className="hover:text-pink-400 transition-colors">Brand Partnerships</span></li>
+              <li><span className="hover:text-pink-400 transition-colors">Social Media</span></li>
+            </ul>
+          </div>
         </div>
         
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-300">
-          <p>&copy; 2024 Elena. All rights reserved.</p>
+        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-gray-400 mb-4 md:mb-0">&copy; 2025 Riina Seise. All rights reserved.</p>
+          <div className="text-gray-500 text-sm">
+            <span>Made with 💖 for authentic storytelling</span>
+          </div>
         </div>
       </div>
     </footer>
@@ -565,44 +1050,87 @@ function App() {
   const [currentSection, setCurrentSection] = useState('home');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const renderSection = () => {
-    switch (currentSection) {
-      case 'home':
-        return <ImageCarousel />;
-      case 'modeling':
-        return <ModelingPortfolio />;
-      case 'ugc':
-        return <UGCSection />;
-      case 'about':
-        return <AboutSection />;
-      case 'contact':
-        return <ContactSection />;
-      default:
-        return <ImageCarousel />;
-    }
+  // Scroll spy functionality
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['home', 'modeling', 'ugc', 'about', 'contact'];
+      const scrollPosition = window.scrollY + 100;
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sections[i]);
+        if (section && section.offsetTop <= scrollPosition) {
+          setCurrentSection(sections[i]);
+          break;
+        }
+      }
+
+      // Update progress bar
+      const progressBar = document.querySelector('.progress-bar') as HTMLElement;
+      if (progressBar) {
+        const progress = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+        progressBar.style.width = `${Math.min(progress, 100)}%`;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Add scroll-to-top functionality
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Scroll Progress Bar */}
+      <div className="fixed top-0 left-0 right-0 z-40 h-1 bg-gray-200">
+        <div className="progress-bar h-full bg-gradient-to-r from-pink-500 to-purple-600 transition-all duration-300 w-0" />
+      </div>
+
+      {/* Navigation */}
       <Navigation
         currentSection={currentSection}
-        onSectionChange={setCurrentSection}
         isMenuOpen={isMenuOpen}
         onMenuToggle={() => setIsMenuOpen(!isMenuOpen)}
       />
       
-      <main className={`transition-all duration-300 ${isMenuOpen ? 'md:mr-64' : 'md:mr-64'}`}>
-        {renderSection()}
-        {currentSection === 'home' && (
-          <div className="bg-white">
-            <AboutSection />
-            <UGCSection />
-            <ContactSection />
-          </div>
-        )}
+      {/* Scrollable Content - All sections visible */}
+      <main className="relative">
+        <MainShowcase />
+        <ModelingPortfolio />
+        <UGCSection />
+        <AboutSection />
+        <ContactSection />
       </main>
       
+      {/* Footer */}
       <Footer />
+
+      {/* Scroll to Top Button */}
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 z-50 bg-gradient-to-r from-pink-500 to-purple-600 text-white p-4 rounded-full shadow-2xl hover:shadow-xl transition-all duration-300 hover:scale-110"
+          aria-label="Scroll to top"
+        >
+          <ArrowUp size={24} />
+        </button>
+      )}
     </div>
   );
 }
