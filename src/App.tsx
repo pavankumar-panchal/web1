@@ -95,10 +95,10 @@ const Navigation: React.FC<NavigationProps> = ({
           <div className="mt-auto pt-8 border-t border-gray-200">
             <p className="text-gray-500 text-sm mb-4">Connect with me</p>
             <div className="flex gap-3">
-              <a href="#" className="p-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-110">
+              <a href="https://www.instagram.com/riinaseise?igsh=MWEwZjJ0cGgwd216cg%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" className="p-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-110">
                 <Instagram size={18} />
               </a>
-              <a href="#" className="p-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-110">
+              <a href="mailto:riina.seise@gmail.com" className="p-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-110">
                 <Mail size={18} />
               </a>
             </div>
@@ -122,7 +122,15 @@ const MainShowcase: React.FC = () => {
     '/web1/images/cropped-img-59.jpg',
     '/web1/images/img-60.jpg',
     '/web1/images/img-62.jpg',
-    '/web1/images/img-66.jpg'
+    '/web1/images/img-66.jpg',
+    '/web1/images/WhatsApp Image 2025-10-01 at 1.17.56 PM.jpeg',
+    '/web1/images/WhatsApp Image 2025-10-01 at 1.17.57 PM.jpeg',
+    '/web1/images/WhatsApp Image 2025-10-01 at 1.17.58 PM.jpeg',
+    '/web1/images/WhatsApp Image 2025-10-01 at 1.17.59 PM.jpeg',
+    '/web1/images/WhatsApp Image 2025-10-01 at 1.18.00 PM.jpeg',
+    '/web1/images/WhatsApp Image 2025-10-01 at 1.18.01 PM.jpeg',
+    '/web1/images/WhatsApp Image 2025-10-01 at 1.18.02 PM.jpeg',
+    '/web1/images/WhatsApp Image 2025-10-01 at 1.18.03 PM.jpeg'
   ];
 
   const [selected, setSelected] = useState<string | null>(null);
@@ -137,9 +145,9 @@ const MainShowcase: React.FC = () => {
 
   const stats = [
     { number: '50+', label: 'Fashion Shows' },
-    { number: '200+', label: 'Photo Shoots' },
-    { number: '100K+', label: 'Social Followers' },
-    { number: '5+', label: 'Years Experience' }
+    { number: '2000+', label: 'Photo Shoots' },
+    { number: '30K+', label: 'Social Followers' },
+    { number: '8+', label: 'Years Experience' }
   ];
 
   const scrollToNext = () => {
@@ -168,12 +176,17 @@ const MainShowcase: React.FC = () => {
                 <span className="text-5xl md:text-7xl">Seise</span>
               </h1>
               <div className="w-24 h-1 bg-gradient-to-r from-pink-500 to-purple-600 mb-6"></div>
-              <p className="text-xl md:text-2xl text-gray-600 leading-relaxed max-w-lg">
-                Professional model, content creator and visual storyteller. Creating authentic moments that captivate and inspire.
-              </p>
+              <div className="max-w-3xl">
+                <p className="text-lg md:text-xl text-gray-600 leading-relaxed font-medium mb-4">
+                  I'm an <span className="text-gray-800 font-semibold">entrepreneur</span> and <span className="text-gray-800 font-semibold">fashion professional</span> who combines an international modeling background with over <span className="text-gray-800 font-semibold">eight years in the agency business</span> to create captivating brand content.
+                </p>
+                <p className="text-lg md:text-xl text-gray-600 leading-relaxed font-medium">
+                  I specialize in high-quality visuals with a refined aesthetic, focusing on fashion, beauty, and lifestyle on Instagram. Beyond digital collaborations, I work with select projects in modeling, fashion and TV - and as a true animal lover and proud cat mama, I enjoy life's simple moments as much as its big adventures.
+                </p>
+              </div>
             </div>
 
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4"> 
               <button 
                 onClick={scrollToNext}
                 className="group bg-gradient-to-r from-pink-600 to-purple-600 text-white px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center gap-2"
@@ -317,10 +330,14 @@ const ModelingPortfolio: React.FC = () => {
       category: 'fashion',
       description: 'High-fashion editorials and runway looks',
       images: [
-        '/web1/images/cropped-img-59.jpg',
-        '/web1/images/img-60.jpg',
-        'https://images.pexels.com/photos/1759622/pexels-photo-1759622.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=600'
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.04 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.05 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.06 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.07 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.08 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.09 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.42 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.43 PM.jpeg'
       ]
     },
     {
@@ -328,10 +345,14 @@ const ModelingPortfolio: React.FC = () => {
       category: 'beauty',
       description: 'Beauty campaigns and portrait photography',
       images: [
-        '/web1/images/img-62.jpg',
-        '/web1/images/img-66.jpg',
-        'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/1172207/pexels-photo-1172207.jpeg?auto=compress&cs=tinysrgb&w=600'
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.10 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.11 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.12 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.13 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.44 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.45 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.46 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.47 PM.jpeg'
       ]
     },
     {
@@ -339,10 +360,14 @@ const ModelingPortfolio: React.FC = () => {
       category: 'commercial',
       description: 'Brand campaigns and lifestyle photography',
       images: [
-        '/web1/images/cropped-img-59.jpg',
-        '/web1/images/img-62.jpg',
-        'https://images.pexels.com/photos/1697912/pexels-photo-1697912.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/1488414/pexels-photo-1488414.jpeg?auto=compress&cs=tinysrgb&w=600'
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.14 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.15 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.16 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.48 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.49 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.50 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.51 PM.jpeg',
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.52 PM.jpeg'
       ]
     }
   ];
@@ -486,45 +511,66 @@ const UGCSection: React.FC = () => {
   const ugcContent = [
     {
       type: 'image',
-      url: '/web1/images/cropped-img-59.jpg',
+      url: '/web1/images/WhatsApp Image 2025-10-01 at 1.18.53 PM.jpeg',
       brand: 'Beauty Brand Collaboration',
       category: 'Beauty',
       description: 'Authentic beauty content showcasing natural glow and skincare routine'
     },
     {
-      type: 'video',
-      url: '/web1/images/img-60.jpg',
-      brand: 'Fashion Video Campaign',
+      type: 'image',
+      url: '/web1/images/WhatsApp Image 2025-10-01 at 1.18.54 PM.jpeg',
+      brand: 'Fashion Campaign',
       category: 'Fashion',
       description: 'Dynamic fashion content featuring latest seasonal trends'
     },
     {
       type: 'image',
-      url: '/web1/images/img-62.jpg',
+      url: '/web1/images/WhatsApp Image 2025-10-01 at 1.19.07 PM.jpeg',
       brand: 'Lifestyle Content',
       category: 'Lifestyle',
       description: 'Relatable lifestyle moments that connect with audiences'
     },
     {
       type: 'image',
-      url: '/web1/images/img-66.jpg',
+      url: '/web1/images/WhatsApp Image 2025-10-01 at 1.19.08 PM.jpeg',
       brand: 'Product Showcase',
       category: 'Product',
       description: 'Creative product photography with authentic styling'
     },
     {
-      type: 'video',
-      url: 'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=600',
+      type: 'image',
+      url: '/web1/images/WhatsApp Image 2025-10-01 at 1.19.09 PM.jpeg',
       brand: 'Brand Partnership',
       category: 'Brand',
       description: 'Long-term brand partnerships creating consistent content'
     },
     {
       type: 'image',
-      url: 'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=600',
+      url: '/web1/images/WhatsApp Image 2025-10-01 at 1.19.10 PM.jpeg',
       brand: 'Social Media Content',
       category: 'Social',
       description: 'Engaging social media content that drives interaction'
+    },
+    {
+      type: 'image',
+      url: '/web1/images/WhatsApp Image 2025-10-01 at 1.19.11 PM.jpeg',
+      brand: 'Editorial Collaboration',
+      category: 'Editorial',
+      description: 'Professional editorial content for fashion magazines'
+    },
+    {
+      type: 'image',
+      url: '/web1/images/WhatsApp Image 2025-10-01 at 1.19.12 PM.jpeg',
+      brand: 'Casual Lifestyle',
+      category: 'Casual',
+      description: 'Relaxed lifestyle content showcasing everyday moments'
+    },
+    {
+      type: 'image',
+      url: '/web1/images/WhatsApp Image 2025-10-01 at 1.19.13 PM.jpeg',
+      brand: 'Professional Portraits',
+      category: 'Portrait',
+      description: 'Professional portrait sessions for personal branding'
     }
   ];
 
@@ -719,68 +765,166 @@ const AboutSection: React.FC = () => {
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto mb-6"></div>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Passionate about creating authentic moments through fashion, beauty, and lifestyle content
+            Entrepreneur, fashion professional, and content creator with over eight years of industry experience
           </p>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="space-y-6 order-2 lg:order-1">
-            <p className="text-lg leading-relaxed text-gray-700">
-              With over 5 years of experience in the modeling and content creation industry, I've had the privilege 
-              of working with renowned fashion brands, beauty companies, and creative agencies across Europe and beyond.
-            </p>
-            
-            <p className="text-lg leading-relaxed text-gray-700">
-              My journey began in Helsinki, where I discovered my passion for fashion and visual storytelling. 
-              Since then, I've graced runways at major fashion weeks, collaborated with emerging designers, 
-              and created authentic content that bridges the gap between brands and their audiences.
-            </p>
-            
-            <p className="text-lg leading-relaxed text-gray-700">
-              What sets me apart is my ability to bring genuine emotion and authenticity to every shoot. 
-              Whether it's a high-fashion editorial, a beauty campaign, or user-generated content for social media, 
-              I approach each project with professionalism, creativity, and attention to detail.
-            </p>
-            
-            <p className="text-lg leading-relaxed text-gray-700">
-              When I'm not in front of the camera, I'm passionate about sustainable fashion, yoga, and exploring 
-              new cultures through travel. I believe in using my platform to promote positive messages about 
-              self-acceptance, diversity, and environmental consciousness.
-            </p>
-            
-            <div className="pt-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Experience Highlights</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {[
-                  { icon: <Award className="w-5 h-5" />, text: "Featured in Vogue, Elle, and Harper's Bazaar" },
-                  { icon: <Camera className="w-5 h-5" />, text: "Walked for major fashion weeks in Paris, Milan, and London" },
-                  { icon: <Heart className="w-5 h-5" />, text: "Brand ambassador for sustainable fashion brands" },
-                  { icon: <Instagram className="w-5 h-5" />, text: "Over 100K engaged followers across social platforms" }
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center gap-3 p-4 bg-white/60 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
-                    <div className="p-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg">
-                      {item.icon}
+        <div className="space-y-20">
+          {/* Main bio section with enhanced professional styling */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <div className="order-2 lg:order-1">
+              {/* Enhanced professional bio with premium styling */}
+              <div className="relative">
+                {/* Background decoration */}
+                <div className="absolute -top-6 -left-6 w-72 h-72 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full opacity-20 blur-3xl"></div>
+                <div className="absolute -bottom-6 -right-6 w-96 h-96 bg-gradient-to-br from-pink-100 to-rose-100 rounded-full opacity-20 blur-3xl"></div>
+                
+                <div className="relative bg-white/95 backdrop-blur-xl p-10 rounded-3xl shadow-2xl border border-white/50 hover:shadow-3xl transition-all duration-500">
+                  {/* Premium quote styling */}
+                  <div className="absolute -top-4 -left-4 text-6xl text-indigo-200/50 font-serif leading-none">"</div>
+                  
+                  <div className="space-y-8">
+                    <div className="space-y-6">
+                      <p className="text-2xl leading-relaxed text-gray-800 font-light tracking-wide">
+                        I'm an <span className="font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">entrepreneur</span> and <span className="font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">fashion professional</span> who combines an international modeling background with over <span className="font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">eight years in the agency business</span> to create captivating brand content.
+                      </p>
+                      
+                      <p className="text-xl leading-relaxed text-gray-700 font-light">
+                        I specialize in <span className="font-semibold text-indigo-600">high-quality visuals with a refined aesthetic</span>, focusing on <span className="font-semibold text-purple-600">fashion, beauty, and lifestyle</span> on Instagram.
+                      </p>
                     </div>
-                    <span className="text-gray-700 font-medium text-sm">{item.text}</span>
+                    
+                    <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
+                    
+                    <div className="space-y-6">
+                      <p className="text-xl leading-relaxed text-gray-700 font-light">
+                        Beyond digital collaborations, I work with select projects in <span className="font-semibold text-pink-600">modeling, fashion and TV</span> - and as a true <span className="font-semibold text-rose-600">animal lover</span> and proud <span className="font-semibold text-purple-600">cat mama</span>, I enjoy life's simple moments as much as its big adventures.
+                      </p>
+                    </div>
                   </div>
-                ))}
+                  
+                  {/* Premium signature line */}
+                  <div className="mt-10 pt-8 border-t border-gray-100">
+                    <div className="flex items-center justify-center space-x-4">
+                      <div className="w-12 h-px bg-gradient-to-r from-transparent to-indigo-300"></div>
+                      <div className="flex items-center space-x-2">
+                        <Heart className="w-5 h-5 text-pink-400" />
+                        <span className="text-sm font-medium text-gray-500 tracking-wider">RIINA SEISE</span>
+                        <Heart className="w-5 h-5 text-purple-400" />
+                      </div>
+                      <div className="w-12 h-px bg-gradient-to-l from-transparent to-purple-300"></div>
+                    </div>
+                  </div>
+                  
+                  <div className="absolute -bottom-4 -right-4 text-6xl text-purple-200/50 font-serif leading-none rotate-180">"</div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="order-1 lg:order-2">
+              <div className="relative group">
+                {/* Enhanced image container with premium effects */}
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-400 via-purple-500 to-pink-500 rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition-all duration-700 scale-105"></div>
+                <div className="absolute inset-0 bg-gradient-to-tr from-blue-400 via-violet-500 to-rose-500 rounded-3xl blur-xl opacity-10 group-hover:opacity-20 transition-all duration-500 scale-110"></div>
+                
+                <div className="relative bg-white p-3 rounded-3xl shadow-2xl group-hover:shadow-3xl transition-all duration-700">
+                  <div className="overflow-hidden rounded-2xl">
+                    <img
+                      src="/web1/images/WhatsApp Image 2025-10-01 at 1.19.15 PM.jpeg"
+                      alt="Riina Seise - Professional Portrait"
+                      className="w-full h-[650px] object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
+                  
+                  {/* Premium image caption */}
+                  <div className="absolute bottom-6 left-6 right-6 bg-white/95 backdrop-blur-xl rounded-2xl p-5 shadow-xl border border-white/50">
+                    <h4 className="text-lg font-bold text-gray-900 mb-1">Professional Portrait</h4>
+                    <p className="text-gray-600 text-sm font-medium">Entrepreneur & Fashion Professional</p>
+                    <div className="mt-3 flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"></div>
+                      <div className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
+                      <div className="w-2 h-2 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full"></div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          
-          <div className="order-1 lg:order-2">
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-3xl blur-xl opacity-30 scale-105"></div>
-              <div className="relative bg-white p-2 rounded-3xl shadow-2xl">
-                <img
-                  src="/web1/images/img-62.jpg"
-                  alt="Riina Seise Portrait"
-                  className="w-full h-[600px] object-cover rounded-2xl"
-                />
-                <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm rounded-xl p-4">
-                  <p className="text-gray-900 font-semibold">Professional Portrait</p>
-                  <p className="text-gray-600 text-sm">Behind the scenes moments</p>
-                </div>
+
+          {/* Premium What Drives Me section */}
+          <div className="relative">
+            {/* Section background decoration */}
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 rounded-3xl opacity-50"></div>
+            
+            <div className="relative py-16 px-8">
+              <div className="text-center mb-16">
+                <h3 className="text-5xl font-black text-gray-900 mb-6 tracking-tight">
+                  <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    What Drives Me
+                  </span>
+                </h3>
+                <div className="w-32 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 mx-auto mb-6"></div>
+                <p className="text-xl text-gray-600 max-w-3xl mx-auto font-light leading-relaxed">
+                  The passion and expertise that fuel my creative journey
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {[
+                  { 
+                    icon: <Award className="w-8 h-8" />, 
+                    title: "Agency Business", 
+                    subtitle: "8+ Years Experience",
+                    color: "from-indigo-500 to-indigo-600",
+                    bgColor: "from-indigo-50 to-indigo-100"
+                  },
+                  { 
+                    icon: <Camera className="w-8 h-8" />, 
+                    title: "International Modeling", 
+                    subtitle: "Global Experience",
+                    color: "from-purple-500 to-purple-600",
+                    bgColor: "from-purple-50 to-purple-100"
+                  },
+                  { 
+                    icon: <Heart className="w-8 h-8" />, 
+                    title: "Animal Lover", 
+                    subtitle: "Proud Cat Mama",
+                    color: "from-pink-500 to-pink-600",
+                    bgColor: "from-pink-50 to-pink-100"
+                  },
+                  { 
+                    icon: <Instagram className="w-8 h-8" />, 
+                    title: "Content Creation", 
+                    subtitle: "Fashion & Lifestyle",
+                    color: "from-rose-500 to-rose-600",
+                    bgColor: "from-rose-50 to-rose-100"
+                  }
+                ].map((item, index) => (
+                  <div key={index} className="group relative">
+                    {/* Card hover glow effect */}
+                    <div className={`absolute inset-0 bg-gradient-to-br ${item.color} rounded-3xl opacity-0 group-hover:opacity-10 blur-xl transition-all duration-500 scale-110`}></div>
+                    
+                    <div className={`relative bg-white/80 backdrop-blur-xl p-8 rounded-3xl shadow-xl border border-white/50 group-hover:shadow-2xl group-hover:scale-105 transition-all duration-500 text-center h-full`}>
+                      {/* Icon container */}
+                      <div className={`w-20 h-20 mx-auto mb-6 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300`}>
+                        <div className="text-white">
+                          {item.icon}
+                        </div>
+                      </div>
+                      
+                      {/* Content */}
+                      <h4 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-gray-800 transition-colors duration-300">
+                        {item.title}
+                      </h4>
+                      <p className="text-gray-600 font-medium text-sm tracking-wide">
+                        {item.subtitle}
+                      </p>
+                      
+                      {/* Bottom accent */}
+                      <div className={`mt-6 h-1 bg-gradient-to-r ${item.color} rounded-full mx-auto w-12 group-hover:w-16 transition-all duration-300`}></div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -841,7 +985,7 @@ const ContactSection: React.FC = () => {
                 </div>
                 <div>
                   <p className="font-semibold text-white">Email</p>
-                  <p className="text-gray-300">riina@example.com</p>
+                  <p className="text-gray-300">riina.seise@gmail.com</p>
                 </div>
               </div>
               
@@ -851,7 +995,17 @@ const ContactSection: React.FC = () => {
                 </div>
                 <div>
                   <p className="font-semibold text-white">Instagram</p>
-                  <p className="text-gray-300">@riina_model</p>
+                  <p className="text-gray-300">@riinaseise</p>
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-4 p-4 bg-white/10 backdrop-blur-sm rounded-xl">
+                <div className="p-3 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl">
+                  <Play className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <p className="font-semibold text-white">TikTok</p>
+                  <p className="text-gray-300">@riinaseise</p>
                 </div>
               </div>
 
@@ -868,20 +1022,28 @@ const ContactSection: React.FC = () => {
             
             <div className="pt-8">
               <h4 className="text-xl font-bold mb-4 text-white">Follow My Work</h4>
-              <div className="flex space-x-4">
+              <div className="flex flex-wrap gap-4">
                 <a
-                  href="mailto:riina@example.com"
-                  className="bg-gradient-to-r from-pink-600 to-purple-600 text-white px-8 py-4 rounded-full hover:shadow-xl transition-all duration-300 hover:scale-105 font-semibold"
+                  href="mailto:riina.seise@gmail.com"
+                  className="bg-gradient-to-r from-pink-600 to-purple-600 text-white px-6 py-3 rounded-full hover:shadow-xl transition-all duration-300 hover:scale-105 font-semibold"
                 >
                   Send Email
                 </a>
                 <a
-                  href="https://instagram.com/riina_model"
+                  href="https://www.instagram.com/riinaseise?igsh=MWEwZjJ0cGgwd216cg%3D%3D&utm_source=qr"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border-2 border-pink-400 text-pink-400 px-8 py-4 rounded-full hover:bg-pink-400 hover:text-white transition-all duration-300 font-semibold"
+                  className="border-2 border-pink-400 text-pink-400 px-6 py-3 rounded-full hover:bg-pink-400 hover:text-white transition-all duration-300 font-semibold"
                 >
-                  Follow on Instagram
+                  Instagram
+                </a>
+                <a
+                  href="https://www.tiktok.com/@riinaseise?_t=ZN-8zytZXE6Gvu&_r=1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border-2 border-purple-400 text-purple-400 px-6 py-3 rounded-full hover:bg-purple-400 hover:text-white transition-all duration-300 font-semibold"
+                >
+                  TikTok
                 </a>
               </div>
             </div>
@@ -954,7 +1116,7 @@ const ContactSection: React.FC = () => {
           {[
             { number: '500+', label: 'Projects Completed' },
             { number: '50+', label: 'Happy Clients' },
-            { number: '5', label: 'Years Experience' },
+            { number: '8', label: 'Years Experience' },
             { number: '24/7', label: 'Available' }
           ].map((stat, index) => (
             <div key={index} className="p-6 bg-white/10 backdrop-blur-sm rounded-xl">
@@ -990,13 +1152,13 @@ const Footer: React.FC = () => {
             </p>
             <div className="flex space-x-4">
               <a
-                href="mailto:riina@example.com"
+                href="mailto:riina.seise@gmail.com"
                 className="bg-gradient-to-r from-pink-500 to-purple-600 p-3 rounded-full hover:shadow-lg transition-all duration-300 hover:scale-110"
               >
                 <Mail size={20} />
               </a>
               <a
-                href="https://instagram.com/riina_model"
+                href="https://www.instagram.com/riinaseise?igsh=MWEwZjJ0cGgwd216cg%3D%3D&utm_source=qr"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-gradient-to-r from-pink-500 to-purple-600 p-3 rounded-full hover:shadow-lg transition-all duration-300 hover:scale-110"
@@ -1004,10 +1166,12 @@ const Footer: React.FC = () => {
                 <Instagram size={20} />
               </a>
               <a
-                href="#"
+                href="https://www.tiktok.com/@riinaseise?_t=ZN-8zytZXE6Gvu&_r=1"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-gradient-to-r from-pink-500 to-purple-600 p-3 rounded-full hover:shadow-lg transition-all duration-300 hover:scale-110"
               >
-                <Camera size={20} />
+                <Play size={20} />
               </a>
             </div>
           </div>
@@ -1038,7 +1202,6 @@ const Footer: React.FC = () => {
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 mb-4 md:mb-0">&copy; 2025 Riina Seise. All rights reserved.</p>
           <div className="text-gray-500 text-sm">
-            <span>Made with 💖 for authentic storytelling</span>
           </div>
         </div>
       </div>
