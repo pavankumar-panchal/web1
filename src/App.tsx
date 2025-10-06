@@ -1310,7 +1310,7 @@ const Footer: React.FC = () => {
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-2">
-            <h3 className="text-3xl font-black mb-4 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+            <h3 className="text-3xl font-black mb-4 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent admin-trigger">
               Riina Seise
             </h3>
             <p className="text-gray-400 mb-6 leading-relaxed">
@@ -1382,18 +1382,70 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
 
-  // Admin access (secret key combination)
+  // Admin access (secret key combination and mobile methods)
   useEffect(() => {
+    // Check URL parameter for admin access
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('admin') === 'true') {
+      setShowAdmin(true);
+      // Remove the parameter from URL without page reload
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
     const handleKeyPress = (e: KeyboardEvent) => {
-      // Press Ctrl+Shift+A to access admin panel
+      // Press Ctrl+Shift+A to access admin panel (desktop)
       if (e.ctrlKey && e.shiftKey && e.key === 'A') {
         e.preventDefault();
         setShowAdmin(true);
       }
     };
 
+    // Mobile access: triple tap detection
+    let tapCount = 0;
+    let tapTimer: NodeJS.Timeout;
+    
+    const handleTripleTap = () => {
+      tapCount++;
+      
+      if (tapCount === 1) {
+        tapTimer = setTimeout(() => {
+          tapCount = 0;
+        }, 1000); // Reset after 1 second
+      } else if (tapCount === 3) {
+        clearTimeout(tapTimer);
+        tapCount = 0;
+        setShowAdmin(true);
+      }
+    };
+
+    // Mobile access: long press on footer logo/text (3 seconds)
+    let pressTimer: NodeJS.Timeout;
+    const handleLongPressStart = (e: TouchEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('.admin-trigger')) {
+        pressTimer = setTimeout(() => {
+          setShowAdmin(true);
+        }, 3000);
+      }
+    };
+
+    const handleLongPressEnd = () => {
+      clearTimeout(pressTimer);
+    };
+
     window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
+    window.addEventListener('click', handleTripleTap);
+    window.addEventListener('touchstart', handleLongPressStart);
+    window.addEventListener('touchend', handleLongPressEnd);
+    
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+      window.removeEventListener('click', handleTripleTap);
+      window.removeEventListener('touchstart', handleLongPressStart);
+      window.removeEventListener('touchend', handleLongPressEnd);
+      clearTimeout(tapTimer);
+      clearTimeout(pressTimer);
+    };
   }, []);
 
   // Scroll spy functionality
