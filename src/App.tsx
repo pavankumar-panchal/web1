@@ -1,5 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Menu, X, Instagram, Mail, Camera, Award, Heart, Phone, ArrowUp, Play } from 'lucide-react';
+import { useImageData } from './hooks/useImageData';
+
+// Lazy load AdminPanel component
+const AdminPanel = lazy(() => import('./components/AdminPanel'));
 
 interface NavigationProps {
   currentSection: string;
@@ -13,10 +17,11 @@ const Navigation: React.FC<NavigationProps> = ({
   onMenuToggle 
 }) => {
   const sections = [
-    { id: 'home', label: 'Home', icon: <Camera size={20} /> },
+    { id: 'home', label: 'Introduction', icon: <Camera size={20} /> },
+    { id: 'gallery', label: 'Gallery', icon: <Award size={20} /> },
+    { id: 'about', label: 'About Riina', icon: <Instagram size={20} /> },
     { id: 'modeling', label: 'Modeling Portfolio', icon: <Award size={20} /> },
     { id: 'ugc', label: 'UGC & Content Creation', icon: <Heart size={20} /> },
-    { id: 'about', label: 'About Me', icon: <Instagram size={20} /> },
     { id: 'contact', label: 'Contact', icon: <Phone size={20} /> }
   ];
 
@@ -117,8 +122,180 @@ const Navigation: React.FC<NavigationProps> = ({
   );
 };
 
+// Hero Image Section Component
+const HeroImageSection: React.FC = () => {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const { images } = useImageData();
+  
+  // Get active hero images from storage, fallback to default if none
+  const heroImages = images.hero?.filter(img => img.isActive) || [
+    {
+      src: '/web1/images/cropped-img-59.jpg',
+      alt: 'Fashion Editorial Portrait',
+      title: 'Fashion Editorial',
+      description: 'High-end fashion photography',
+      category: 'Fashion'
+    },
+    {
+      src: '/web1/images/img-60.jpg',
+      alt: 'Professional Beauty Shot',
+      title: 'Beauty Portfolio',
+      description: 'Professional beauty campaigns',
+      category: 'Beauty'
+    },
+    {
+      src: '/web1/images/img-62.jpg',
+      alt: 'Commercial Photography',
+      title: 'Commercial Work',
+      description: 'Brand collaborations & lifestyle',
+      category: 'Commercial'
+    }
+  ];
+
+  return (
+    <section id="gallery" className="relative w-full bg-gradient-to-br from-gray-50 via-white to-pink-50 py-20 md:py-32 overflow-hidden">
+      {/* Refined background elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/4 left-1/6 w-40 h-40 bg-gradient-to-br from-pink-100 to-purple-100 rounded-full opacity-30 blur-xl"></div>
+        <div className="absolute bottom-1/3 right-1/5 w-56 h-56 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full opacity-20 blur-xl animate-float"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-pink-50 to-purple-50 rounded-full opacity-40 blur-2xl"></div>
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+        {/* Enhanced Section Header */}
+        <div className="text-center mb-16 md:mb-20">
+          <div className="inline-flex items-center justify-center p-2 bg-white/60 backdrop-blur-sm rounded-full mb-6">
+            <span className="px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-sm font-semibold rounded-full">
+              Featured Work
+            </span>
+          </div>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tight mb-6 bg-gradient-to-r from-gray-900 via-pink-600 to-purple-600 bg-clip-text text-transparent leading-tight">
+            Portfolio Highlights
+          </h2>
+          <div className="w-20 h-1 bg-gradient-to-r from-pink-500 to-purple-600 mx-auto mb-8 rounded-full"></div>
+          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            Showcasing excellence across fashion, beauty, and commercial photography
+          </p>
+        </div>
+
+        {/* Enhanced Three Large Images Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 lg:gap-12">
+          {heroImages.map((image, index) => (
+            <div 
+              key={index}
+              className="group relative cursor-pointer"
+              onClick={() => setSelectedImage(image.src)}
+            >
+              {/* Enhanced Image Container */}
+              <div className="relative overflow-hidden rounded-3xl shadow-2xl group-hover:shadow-pink-500/20 transition-all duration-700 transform group-hover:-translate-y-3 group-hover:rotate-1">
+                {/* Improved gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500 z-10"></div>
+                
+                {/* Category badge */}
+                <div className="absolute top-6 left-6 z-30">
+                  <span className="inline-flex items-center px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-900 text-xs font-semibold rounded-full shadow-lg">
+                    {image.category}
+                  </span>
+                </div>
+                
+                {/* Main Image with improved aspect ratio */}
+                <img 
+                  src={image.src}
+                  alt={image.alt}
+                  className="w-full h-[450px] md:h-[520px] lg:h-[580px] object-cover transition-transform duration-1000 group-hover:scale-110"
+                  loading="lazy"
+                />
+                
+                {/* Enhanced Content Overlay */}
+                <div className="absolute bottom-0 left-0 right-0 p-8 z-20">
+                  <div className="transform translate-y-6 group-hover:translate-y-0 transition-all duration-500 ease-out">
+                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-3 tracking-tight">
+                      {image.title}
+                    </h3>
+                    <p className="text-white/90 text-base md:text-lg opacity-0 group-hover:opacity-100 transition-all duration-500 delay-150 leading-relaxed">
+                      {image.description}
+                    </p>
+                    <div className="mt-6 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-300">
+                      <span className="inline-flex items-center text-white text-sm font-medium bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 hover:bg-white/20 transition-colors">
+                        View Project
+                        <ArrowUp className="ml-2 w-4 h-4 rotate-45 transition-transform group-hover:rotate-90" />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Subtle border enhancement */}
+                <div className="absolute inset-0 border border-white/10 rounded-3xl group-hover:border-white/30 transition-colors duration-500"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Enhanced Call to Action Section */}
+        <div className="text-center mt-16 md:mt-20">
+          <div className="max-w-3xl mx-auto">
+            <p className="text-gray-600 text-lg mb-8 leading-relaxed">
+              Ready to explore my complete portfolio and see how we can work together?
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <button 
+                onClick={() => document.getElementById('modeling')?.scrollIntoView({ behavior: 'smooth' })}
+                className="group bg-gradient-to-r from-pink-600 to-purple-600 text-white px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center gap-3 font-semibold"
+              >
+                <Camera className="w-5 h-5" />
+                <span>View Full Portfolio</span>
+                <ArrowUp className="w-4 h-4 rotate-45 group-hover:rotate-90 transition-transform duration-300" />
+              </button>
+              <button 
+                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                className="group border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-full hover:border-gray-900 hover:text-gray-900 hover:bg-gray-50 transition-all duration-300 font-semibold flex items-center gap-3"
+              >
+                <Mail className="w-5 h-5" />
+                <span>Get In Touch</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Enhanced Modal with better UX */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="relative max-w-7xl w-full" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute -top-16 right-0 bg-white/10 backdrop-blur-sm text-white p-4 rounded-full shadow-lg hover:bg-white/20 transition-all duration-300 hover:scale-110 z-10 border border-white/20"
+              aria-label="Close image"
+            >
+              <X size={24} />
+            </button>
+            <div className="bg-white/5 backdrop-blur-sm p-4 rounded-3xl shadow-2xl border border-white/10">
+              <img 
+                src={selectedImage} 
+                alt="Enlarged view" 
+                className="w-full h-auto max-h-[85vh] object-contain rounded-2xl" 
+              />
+            </div>
+            <div className="text-center mt-6">
+              <p className="text-white/70 text-sm">
+                Click outside or press the × to close
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+};
+
 const MainShowcase: React.FC = () => {
-  const images = [
+  const { images } = useImageData();
+  
+  // Get active introduction images from storage, fallback to default if none
+  const introductionImages = images.introduction?.filter(img => img.isActive)?.map(img => img.src) || [
     '/web1/images/cropped-img-59.jpg',
     '/web1/images/img-60.jpg',
     '/web1/images/img-62.jpg',
@@ -138,10 +315,10 @@ const MainShowcase: React.FC = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % images.length);
+      setCurrentImageIndex((prev) => (prev + 1) % introductionImages.length);
     }, 4000);
     return () => clearInterval(interval);
-  }, [images.length]);
+  }, [introductionImages.length]);
 
   const stats = [
     { number: '50+', label: 'Fashion Shows' },
@@ -239,10 +416,10 @@ const MainShowcase: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-600 rounded-3xl blur-xl opacity-30 scale-105 group-hover:opacity-50 transition-all duration-500"></div>
               <div className="relative bg-white p-2 rounded-3xl shadow-2xl">
                 <img 
-                  src={images[currentImageIndex]} 
+                  src={introductionImages[currentImageIndex]} 
                   alt={`Riina ${currentImageIndex + 1}`} 
                   className="w-full h-[500px] object-cover rounded-2xl cursor-pointer transition-all duration-500 hover:scale-105"
-                  onClick={() => setSelected(images[currentImageIndex])}
+                  onClick={() => setSelected(introductionImages[currentImageIndex])}
                 />
                 <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm rounded-xl p-4">
                   <p className="text-gray-900 font-semibold">Professional Portfolio</p>
@@ -253,7 +430,7 @@ const MainShowcase: React.FC = () => {
 
             {/* Thumbnail strip with enhanced styling */}
             <div className="grid grid-cols-4 gap-4">
-              {images.map((src, i) => (
+              {introductionImages.map((src, i) => (
                 <button
                   key={i}
                   onClick={() => {
@@ -323,51 +500,41 @@ const MainShowcase: React.FC = () => {
 const ModelingPortfolio: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const { images } = useImageData();
 
+  // Get portfolio images from storage, fallback to default structure
   const portfolioSections = [
     {
       title: 'Fashion Editorial',
       category: 'fashion',
       description: 'High-fashion editorials and runway looks',
-      images: [
+      images: images.portfolio?.fashion?.filter(img => img.isActive)?.map(img => img.src) || [
         '/web1/images/WhatsApp Image 2025-10-01 at 1.18.04 PM.jpeg',
         '/web1/images/WhatsApp Image 2025-10-01 at 1.18.05 PM.jpeg',
         '/web1/images/WhatsApp Image 2025-10-01 at 1.18.06 PM.jpeg',
-        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.07 PM.jpeg',
-        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.08 PM.jpeg',
-        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.09 PM.jpeg',
-        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.42 PM.jpeg',
-        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.43 PM.jpeg'
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.07 PM.jpeg'
       ]
     },
     {
       title: 'Beauty & Portrait',
       category: 'beauty',
       description: 'Beauty campaigns and portrait photography',
-      images: [
+      images: images.portfolio?.beauty?.filter(img => img.isActive)?.map(img => img.src) || [
         '/web1/images/WhatsApp Image 2025-10-01 at 1.18.10 PM.jpeg',
         '/web1/images/WhatsApp Image 2025-10-01 at 1.18.11 PM.jpeg',
         '/web1/images/WhatsApp Image 2025-10-01 at 1.18.12 PM.jpeg',
-        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.13 PM.jpeg',
-        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.44 PM.jpeg',
-        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.45 PM.jpeg',
-        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.46 PM.jpeg',
-        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.47 PM.jpeg'
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.13 PM.jpeg'
       ]
     },
     {
       title: 'Commercial & Lifestyle',
       category: 'commercial',
       description: 'Brand campaigns and lifestyle photography',
-      images: [
+      images: images.portfolio?.commercial?.filter(img => img.isActive)?.map(img => img.src) || [
         '/web1/images/WhatsApp Image 2025-10-01 at 1.18.14 PM.jpeg',
         '/web1/images/WhatsApp Image 2025-10-01 at 1.18.15 PM.jpeg',
         '/web1/images/WhatsApp Image 2025-10-01 at 1.18.16 PM.jpeg',
-        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.48 PM.jpeg',
-        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.49 PM.jpeg',
-        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.50 PM.jpeg',
-        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.51 PM.jpeg',
-        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.52 PM.jpeg'
+        '/web1/images/WhatsApp Image 2025-10-01 at 1.18.48 PM.jpeg'
       ]
     }
   ];
@@ -854,7 +1021,7 @@ const AboutSection: React.FC = () => {
           {/* Premium What Drives Me section */}
           <div className="relative">
             {/* Section background decoration */}
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 rounded-3xl opacity-50"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 rounded-3xl opacity-50"></div>
             
             <div className="relative py-16 px-8">
               <div className="text-center mb-16">
@@ -863,7 +1030,7 @@ const AboutSection: React.FC = () => {
                     What Drives Me
                   </span>
                 </h3>
-                <div className="w-32 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 mx-auto mb-6"></div>
+                <div className="w-32 h-1 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-600 mx-auto mb-6"></div>
                 <p className="text-xl text-gray-600 max-w-3xl mx-auto font-light leading-relaxed">
                   The passion and expertise that fuel my creative journey
                 </p>
@@ -1179,10 +1346,11 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-gray-400">
-              <li><button onClick={() => scrollToSection('home')} className="hover:text-pink-400 transition-colors">Home</button></li>
+              <li><button onClick={() => scrollToSection('home')} className="hover:text-pink-400 transition-colors">Introduction</button></li>
+              <li><button onClick={() => scrollToSection('gallery')} className="hover:text-pink-400 transition-colors">Gallery</button></li>
+              <li><button onClick={() => scrollToSection('about')} className="hover:text-pink-400 transition-colors">About Riina</button></li>
               <li><button onClick={() => scrollToSection('modeling')} className="hover:text-pink-400 transition-colors">Portfolio</button></li>
               <li><button onClick={() => scrollToSection('ugc')} className="hover:text-pink-400 transition-colors">UGC Content</button></li>
-              <li><button onClick={() => scrollToSection('about')} className="hover:text-pink-400 transition-colors">About</button></li>
               <li><button onClick={() => scrollToSection('contact')} className="hover:text-pink-400 transition-colors">Contact</button></li>
             </ul>
           </div>
@@ -1212,11 +1380,26 @@ const Footer: React.FC = () => {
 function App() {
   const [currentSection, setCurrentSection] = useState('home');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showAdmin, setShowAdmin] = useState(false);
+
+  // Admin access (secret key combination)
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      // Press Ctrl+Shift+A to access admin panel
+      if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+        e.preventDefault();
+        setShowAdmin(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, []);
 
   // Scroll spy functionality
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['home', 'modeling', 'ugc', 'about', 'contact'];
+      const sections = ['home', 'gallery', 'about', 'modeling', 'ugc', 'contact'];
       const scrollPosition = window.scrollY + 100;
 
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -1275,14 +1458,27 @@ function App() {
       {/* Scrollable Content - All sections visible */}
       <main className="relative">
         <MainShowcase />
+        <HeroImageSection />
+        <AboutSection />
         <ModelingPortfolio />
         <UGCSection />
-        <AboutSection />
         <ContactSection />
       </main>
       
       {/* Footer */}
       <Footer />
+
+      {/* Admin Panel */}
+      {showAdmin && (
+        <Suspense fallback={<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-8">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto"></div>
+            <p className="mt-4 text-center">Loading Admin Panel...</p>
+          </div>
+        </div>}>
+          <AdminPanel onClose={() => setShowAdmin(false)} />
+        </Suspense>
+      )}
 
       {/* Scroll to Top Button */}
       {showScrollTop && (
