@@ -301,7 +301,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm">
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50 flex flex-col lg:flex-row">
         {/* Sidebar */}
-        <div className="w-full lg:w-80 bg-white shadow-2xl border-b lg:border-b-0 lg:border-r border-purple-100 flex flex-col">
+        <div className="w-full lg:w-80 bg-white shadow-2xl border-b lg:border-b-0 lg:border-r border-purple-100 flex flex-col h-full lg:h-screen">
           {/* Header - Fixed */}
           <div className="p-4 lg:p-6 border-b border-purple-100 bg-gradient-to-r from-pink-500 to-purple-600 flex-shrink-0">
             <div className="flex items-center justify-between">
@@ -319,72 +319,69 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
             </div>
           </div>
 
-          {/* Scrollable Content */}
-          <div className="flex-1 flex flex-col min-h-0">
-            <div className="flex-1 overflow-y-auto">
-              {/* Navigation */}
-              <div className="p-3 lg:p-4">
-                <h3 className="text-xs lg:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Page Sections</h3>
-                <div className="grid grid-cols-2 lg:grid-cols-1 gap-2">
-                  {sections.map((section) => (
-                    <button
-                      key={section.id}
-                      onClick={() => setActiveSection(section.id)}
-                      className={`w-full flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2 lg:py-3 rounded-xl transition-all duration-200 text-sm lg:text-base ${
-                        activeSection === section.id
-                          ? `bg-gradient-to-r ${section.color} text-white shadow-lg`
-                          : 'text-gray-600 hover:bg-purple-50 hover:text-purple-600'
-                      }`}
-                    >
-                      {section.icon}
-                      <span className="font-medium truncate">{section.label}</span>
-                    </button>
-                  ))}
-                </div>
+          {/* Scrollable Navigation Area */}
+          <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-purple-300 scrollbar-track-gray-100">
+            <div className="p-3 lg:p-4 pb-2">
+              <h3 className="text-xs lg:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Page Sections</h3>
+              <div className="grid grid-cols-2 lg:grid-cols-1 gap-2">
+                {sections.map((section) => (
+                  <button
+                    key={section.id}
+                    onClick={() => setActiveSection(section.id)}
+                    className={`w-full flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2 lg:py-3 rounded-xl transition-all duration-200 text-sm lg:text-base ${
+                      activeSection === section.id
+                        ? `bg-gradient-to-r ${section.color} text-white shadow-lg`
+                        : 'text-gray-600 hover:bg-purple-50 hover:text-purple-600'
+                    }`}
+                  >
+                    {section.icon}
+                    <span className="font-medium truncate">{section.label}</span>
+                  </button>
+                ))}
+              </div>
 
-                {/* Portfolio Subcategories */}
-                {activeSection === 'portfolio' && (
-                  <div className="mt-4 lg:mt-6">
-                    <h3 className="text-xs lg:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Portfolio Categories</h3>
-                    <div className="grid grid-cols-1 gap-1">
-                      {portfolioCategories.map((category) => (
-                        <button
-                          key={category.id}
-                          onClick={() => setActiveSubCategory(category.id)}
-                          className={`w-full text-left px-3 lg:px-4 py-2 rounded-lg transition-all duration-200 text-sm lg:text-base ${
-                            activeSubCategory === category.id
-                              ? 'bg-purple-100 text-purple-600 font-medium'
-                              : 'text-gray-500 hover:bg-purple-50 hover:text-purple-500'
-                          }`}
-                        >
-                          {category.label}
-                        </button>
-                      ))}
-                    </div>
+              {/* Portfolio Subcategories */}
+              {activeSection === 'portfolio' && (
+                <div className="mt-4 lg:mt-6">
+                  <h3 className="text-xs lg:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Portfolio Categories</h3>
+                  <div className="grid grid-cols-1 gap-2">
+                    {portfolioCategories.map((category) => (
+                      <button
+                        key={category.id}
+                        onClick={() => setActiveSubCategory(category.id)}
+                        className={`w-full text-left px-3 lg:px-4 py-2 rounded-lg transition-all duration-200 text-sm lg:text-base ${
+                          activeSubCategory === category.id
+                            ? 'bg-purple-100 text-purple-600 font-medium'
+                            : 'text-gray-500 hover:bg-purple-50 hover:text-purple-500'
+                        }`}
+                      >
+                        {category.label}
+                      </button>
+                    ))}
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
+          </div>
 
-            {/* Actions - Fixed at bottom */}
-            <div className="flex-shrink-0 p-3 lg:p-4 pt-2 border-t border-purple-100 bg-white">
-              <h3 className="text-xs lg:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Actions</h3>
-              <div className="grid grid-cols-1 lg:grid-cols-1 gap-2">
-                <button
-                  onClick={() => setShowAddForm(true)}
-                  className="w-full flex items-center justify-center gap-2 lg:gap-3 px-3 lg:px-4 py-2 lg:py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl hover:shadow-lg transition-all duration-200 text-sm lg:text-base"
-                >
-                  <Upload className="w-4 h-4" />
-                  <span className="font-medium">Add Media</span>
-                </button>
-                <button
-                  onClick={exportData}
-                  className="w-full flex items-center justify-center gap-2 lg:gap-3 px-3 lg:px-4 py-2 lg:py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl hover:shadow-lg transition-all duration-200 text-sm lg:text-base"
-                >
-                  <Download className="w-4 h-4" />
-                  <span className="font-medium">Export Data</span>
-                </button>
-              </div>
+          {/* Actions - Always Fixed at Bottom */}
+          <div className="flex-shrink-0 p-3 lg:p-4 border-t border-purple-100 bg-white shadow-lg">
+            <h3 className="text-xs lg:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Actions</h3>
+            <div className="space-y-2">
+              <button
+                onClick={() => setShowAddForm(true)}
+                className="w-full flex items-center justify-center gap-2 lg:gap-3 px-3 lg:px-4 py-2 lg:py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl hover:shadow-lg transition-all duration-200 text-sm lg:text-base font-medium"
+              >
+                <Upload className="w-4 h-4" />
+                <span>Add Media</span>
+              </button>
+              <button
+                onClick={exportData}
+                className="w-full flex items-center justify-center gap-2 lg:gap-3 px-3 lg:px-4 py-2 lg:py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl hover:shadow-lg transition-all duration-200 text-sm lg:text-base font-medium"
+              >
+                <Download className="w-4 h-4" />
+                <span>Export Data</span>
+              </button>
             </div>
           </div>
         </div>
